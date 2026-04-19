@@ -2,18 +2,35 @@
 <html>
 <head>
   <title>Laundry Status</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 100px;
+      transition: background-color 0.3s;
+    }
+
+    h1 {
+      font-size: 40px;
+    }
+
+    #status {
+      font-size: 50px;
+      font-weight: bold;
+      margin-top: 30px;
+    }
+  </style>
 </head>
-
-<body style="font-family: Arial; text-align:center;">
-
+<body>
   <h1>Washer 1 Status</h1>
-
-  <h2 id="status">Loading...</h2>
+  <div id="status">Loading...</div>
 
   <script>
-    // Firebase config
     const firebaseConfig = {
       apiKey: "AIzaSyA8TsVM19zSqGhKo4L_zMnV8acPXaVl4sA",
       databaseURL: "https://laundryapp-cd794-default-rtdb.firebaseio.com"
@@ -22,18 +39,18 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    const statusRef = db.ref("/machines/washer1/status");
+    const statusRef = db.ref("machines/washer1/status");
 
     statusRef.on("value", (snapshot) => {
-      document.getElementById("status").innerText = snapshot.val();
+      const status = snapshot.val();
+      document.getElementById("status").innerText = status;
 
-      if (snapshot.val() === "IN USE") {
-        document.body.style.background = "red";
+      if (status === "IN USE") {
+        document.body.style.backgroundColor = "#ffb3b3";
       } else {
-        document.body.style.background = "green";
+        document.body.style.backgroundColor = "#b6f5b6";
       }
     });
   </script>
-
 </body>
 </html>
