@@ -203,7 +203,7 @@ export default function App() {
             <div>
               <a href="https://tickle.utk.edu" style={{ color: '#FF8200', textDecoration: 'none', fontWeight: 300 }}>TCE Website</a>
               <p style={{ margin: '12px 0 0 0', fontStyle: 'italic', fontWeight: 700 }}>
-                {"Project created by Pon Madan Rangaraj and Team".split('').map((char, index) => (
+                {"Project created by Pon Madan Rangaraj, Aaron Choi, Swagat Khot, and Aarohan Singh".split('').map((char, index) => (
                   <span
                     key={index}
                     style={{
