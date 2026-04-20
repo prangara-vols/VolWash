@@ -20,6 +20,25 @@ export interface ConnectionState {
   error?: string | null;
 }
 
+// Configuration Constants
+const OFFLINE_TIMEOUT_MS = 15000; // 15 seconds (adjust based on ESP32 send frequency)
+const VIBRATION_THRESHOLD = 0.5;   // Ignore noise below this value
+
+/**
+ * Interface for the raw data structure coming from Firebase
+ */
+interface FirebaseMachineData {
+  status?: string;
+  vibration: number;
+  lastUpdate: number;
+  location?: string;
+  timeLeft?: number;
+}
+
+interface FirebaseSnapshot {
+  [key: string]: FirebaseMachineData;
+}
+
 export function useSensorData() {
   const [sensors, setSensors] = useState<SensorReading[]>([]);
   const [connection, setConnection] = useState<ConnectionState>({
@@ -33,7 +52,7 @@ export function useSensorData() {
     const machinesRef = ref(db, 'machines');
 
     const unsubscribe = onValue(machinesRef, (snapshot) => {
-      const data = snapshot.val();
+      const data = snapshot.val() as FirebaseSnapshot | null;
       if (!data) {
         setSensors([]);
         setConnection(prev => ({ ...prev, connected: true, lastUpdated: Date.now() }));
@@ -51,7 +70,6 @@ export function useSensorData() {
         // Offline detection logic: 
         // If the ESP32 is unplugged, it won't update the heartbeat (lastUpdate).
         // We consider it offline if the heartbeat is missing or older than 60 seconds.
-        const OFFLINE_TIMEOUT_MS = 60000;
         let lastSeen = machine.lastUpdate;
         
         // Normalize: Many ESP32 libraries send Unix seconds; JS expects milliseconds.
@@ -64,14 +82,14 @@ export function useSensorData() {
         );
 
         const status: SensorStatus = isOffline ? 'offline' : 
-          (machine.vibration > 0 ? 'occupied' : 'free');
+          (machine.vibration > VIBRATION_THRESHOLD ? 'occupied' : 'free');
 
         return {
           id: key,
           name: isDemo ? 'Washing Demo' : key.charAt(0).toUpperCase() + key.slice(1).replace(/(\d+)/, ' $1'),
           location: isDemo ? 'Demo' : (machine.location || 'UTK Dorm'),
           status,
-          vibration: machine.vibration || 0,
+          vibration: isOffline ? 0 : (machine.vibration || 0),
           timestamp: now,
           timeLeft: machine.timeLeft || 0,
         };
