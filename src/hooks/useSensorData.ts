@@ -9,7 +9,7 @@ export interface SensorReading {
   name: string;
   location: string;
   status: SensorStatus;
-  vibration: number; 
+  vibration: number;
   timestamp: number;
   timeLeft?: number;
 }
@@ -20,52 +20,90 @@ export interface ConnectionState {
   error?: string | null;
 }
 
-// Configuration Constants
-const OFFLINE_TIMEOUT_MS = 15000; // 15 seconds (adjust based on ESP32 send frequency)
-const VIBRATION_THRESHOLD = 0.5;   // Ignore noise below this value
+const OFFLINE_TIMEOUT_MS = 15000; // 15 sec
 
-/**
- * Interface for the raw data structure coming from Firebase
- */
 interface FirebaseMachineData {
   status?: string;
-  vibration: number;
-  lastUpdate: number;
+  vibration?: number;
+  lastUpdate?: number;
   location?: string;
   timeLeft?: number;
 }
 
-interface FirebaseSnapshot {
-  [key: string]: FirebaseMachineData;
-}
-
 export function useSensorData() {
-  const [sensors, setSensors] = useState<SensorReading[]>([]);
+  const [sensor, setSensor] = useState<SensorReading | null>(null);
   const [connection, setConnection] = useState<ConnectionState>({
     connected: false,
     lastUpdated: null,
     error: null
   });
-
-  // We store the raw Firebase data and a local timestamp.
-  // This allows us to detect timeouts even when Firebase doesn't send new events.
-  const [rawMachines, setRawMachines] = useState<FirebaseSnapshot | null>(null);
   const [now, setNow] = useState(Date.now());
 
   useEffect(() => {
-    // Listen to the 'machines' node in your Firebase Realtime DB
-    const machinesRef = ref(db, 'machines');
+    // Only listen to the demo machine
+    const washerRef = ref(db, 'machines/washer1');
 
-    const unsubscribe = onValue(machinesRef, (snapshot) => {
-      const data = snapshot.val() as FirebaseSnapshot | null;
-      setRawMachines(data);
-      setConnection({ connected: true, lastUpdated: now, error: null });
-    }, (error) => {
-      console.error("Firebase Read Error:", error);
-      setConnection(prev => ({ ...prev, connected: false, error: error.message }));
-    });
+    const unsubscribe = onValue(
+      washerRef,
+      (snapshot) => {
+        const machine = snapshot.val() as FirebaseMachineData | null;
+        const currentTime = Date.now();
 
-    // This timer runs every 5 seconds to force the UI to check for timed-out sensors
+        if (!machine) {
+          setSensor(null);
+          setConnection({
+            connected: false,
+            lastUpdated: null,
+            error: 'No demo machine data found'
+          });
+          return;
+        }
+
+        let lastSeen = machine.lastUpdate ?? currentTime;
+
+        // If timestamp came in seconds instead of ms, convert it
+        if (lastSeen < 10000000000) {
+          lastSeen *= 1000;
+        }
+
+        const isOffline = !lastSeen || (currentTime - lastSeen > OFFLINE_TIMEOUT_MS);
+
+        let status: SensorStatus = 'free';
+
+        if (isOffline) {
+          status = 'offline';
+        } else if (machine.status === 'IN USE' || (machine.vibration ?? 0) >= 1) {
+          status = 'occupied';
+        } else {
+          status = 'free';
+        }
+
+        setSensor({
+          id: 'washer1',
+          name: 'Washing Demo',
+          location: 'Demo',
+          status,
+          vibration: isOffline ? 0 : (machine.vibration ?? (machine.status === 'IN USE' ? 1 : 0)),
+          timestamp: lastSeen,
+          timeLeft: machine.timeLeft
+        });
+
+        setConnection({
+          connected: true,
+          lastUpdated: currentTime,
+          error: null
+        });
+      },
+      (error) => {
+        console.error('Firebase Read Error:', error);
+        setConnection({
+          connected: false,
+          lastUpdated: null,
+          error: error.message
+        });
+      }
+    );
+
     const interval = setInterval(() => {
       setNow(Date.now());
     }, 5000);
@@ -76,48 +114,27 @@ export function useSensorData() {
     };
   }, []);
 
-  // Derive the sensor array whenever the DB data OR our local clock changes
-  const sensorsList = useMemo(() => {
-    if (!rawMachines) return [];
+  const sensors = useMemo(() => {
+    if (!sensor) return [];
 
-    return Object.keys(rawMachines).map((key) => {
-      const machine = rawMachines[key];
-      const isDemo = key.replace(/\s/g, '').toLowerCase() === 'washer1';
-      
-      let lastSeen = machine.lastUpdate;
-      if (lastSeen && lastSeen < 10000000000) lastSeen *= 1000;
+    const isOffline = now - sensor.timestamp > OFFLINE_TIMEOUT_MS;
 
-      const isOffline = !isDemo && (
-        machine.status === 'OFFLINE' || 
-        !lastSeen || 
-        (now - lastSeen > OFFLINE_TIMEOUT_MS)
-      );
+    if (!isOffline) return [sensor];
 
-      const status: SensorStatus = isOffline ? 'offline' : 
-        (machine.vibration > VIBRATION_THRESHOLD ? 'occupied' : 'free');
-
-      return {
-        id: key,
-        name: isDemo ? 'Washing Demo' : key.charAt(0).toUpperCase() + key.slice(1).replace(/(\d+)/, ' $1'),
-        location: isDemo ? 'Demo' : (machine.location || 'UTK Dorm'),
-        status,
-        vibration: isOffline ? 0 : (machine.vibration || 0),
-        timestamp: now,
-        timeLeft: machine.timeLeft || 0,
-      };
-    });
-  }, [rawMachines, now]);
-
-  // Update the sensors state whenever our derived list changes
-  useEffect(() => {
-    setSensors(sensorsList);
-  }, [sensorsList]);
+    return [
+      {
+        ...sensor,
+        status: 'offline',
+        vibration: 0
+      }
+    ];
+  }, [sensor, now]);
 
   const stats = {
     total: sensors.length,
-    free: sensors.filter(s => s.status === 'free').length,
-    occupied: sensors.filter(s => s.status === 'occupied').length,
-    offline: sensors.filter(s => s.status === 'offline').length,
+    free: sensors.filter((s) => s.status === 'free').length,
+    occupied: sensors.filter((s) => s.status === 'occupied').length,
+    offline: sensors.filter((s) => s.status === 'offline').length,
   };
 
   return { sensors, stats, connection };
