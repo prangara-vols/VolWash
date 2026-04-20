@@ -55,11 +55,12 @@ export default function App() {
             {/* Unit Identifier */}
             <div>
               <h1 title="VolWash" style={{ 
-                fontSize: window.innerWidth > 768 ? '39px' : '18px', 
+                fontSize: window.innerWidth > 768 ? '44px' : '24px', 
                 margin: 0, 
                 fontWeight: 700, 
                 color: '#58595B', // Smokey Gray
                 lineHeight: 1,
+                fontFamily: 'inherit',
                 letterSpacing: '-0.02em'
               }}>VolWash</h1>
             </div>
@@ -153,8 +154,8 @@ export default function App() {
       color: theme.text, 
       paddingBottom: '80px', 
       transition: 'background-color 0.3s',
-      // UTK Standard: Gotham. Fallback: Montserrat (UTK web alternative)
-      fontFamily: '"Montserrat", Gotham, "Helvetica Neue", Arial, sans-serif'
+      // Official UTK Brand font prioritized
+      fontFamily: 'Gotham, "Montserrat", "Helvetica Neue", Arial, sans-serif'
     }}>
       {/* 1. The Big Orange ID Line (6px UT Orange) */}
       <div style={{ height: '6px', backgroundColor: '#FF8200', width: '100%' }} />
@@ -214,12 +215,12 @@ export default function App() {
         borderTop: isDarkMode ? '1px solid #2C2C2E' : '1px solid #E5E5EA'
       }}>
         <div style={{ ...styles.footerContent, textAlign: 'left' }}>
-          <div style={{ marginBottom: '20px' }}>
+          <div style={{ marginBottom: '20px', marginLeft: '24px' }}>
             <p style={{ margin: '0 0 4px 0', fontWeight: 700 }}>The University of Tennessee</p>
             <p style={{ margin: 0 }}>Knoxville, Tennessee 37996<br />865-974-1000</p>
           </div>
           
-          <p style={{ lineHeight: '1.6', maxWidth: '600px', fontWeight: 300 }}>
+          <p style={{ lineHeight: '1.6', maxWidth: '600px', fontWeight: 300, marginLeft: '24px' }}>
             The flagship campus of the University of Tennessee System and partner in the Tennessee Transfer Pathway.
           </p>
 
