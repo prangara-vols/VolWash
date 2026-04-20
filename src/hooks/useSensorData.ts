@@ -47,10 +47,11 @@ export function useSensorData() {
         const machine = data[key];
         
         const isDemo = key.replace(/\s/g, '').toLowerCase() === 'washer1';
-        
-        // Logic: Map Firebase "IN USE" to our UI "occupied"
-        const status: SensorStatus = 
-          machine.status === 'IN USE' ? 'occupied' : 'free';
+
+        // Logic: Map Firebase status to our UI states (occupied, free, or offline)
+        const status: SensorStatus =
+          machine.status === 'OFFLINE' ? 'offline' :
+          (machine.status === 'IN USE' ? 'occupied' : 'free');
 
         return {
           id: key,
