@@ -172,6 +172,7 @@ export default function AlertsScreen({ isDarkMode = true }: { isDarkMode?: boole
       <div style={styles.listContent}>
         {filteredAlerts.length === 0 ? (
           <div style={styles.empty}>
+            <div style={styles.emptyIcon} />
             <div style={{ ...styles.emptyText, color: isDarkMode ? '#FFFFFF' : '#000000' }}>No alerts</div>
             <div style={styles.emptySubtext}>All sensors are reporting normally</div>
           </div>
