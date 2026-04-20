@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import AlertsScreen from './app/alerts';
 import MapScreen from './app/map';
 import utkLogo from './assets/images/UTK.png';
-import logo from './assets/images/volwash-logo.png';
+import logo from './assets/images/volwash-logo-textless.png';
 import ConnectionBanner from './components/ConnectionBanner';
 import SensorCard from './components/SensorCard';
 import StatsBar from './components/StatsBar';
