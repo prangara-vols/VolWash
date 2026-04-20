@@ -80,11 +80,6 @@ export default function SensorCard({ sensor, isDarkMode = true, onPress }: Props
       <div style={{ ...styles.location, color: isDarkMode ? '#8E8E93' : '#636366' }}>{sensor.location}</div>
 
       {/* ---- Time Remaining (OG Logic) ---- */}
-      {sensor.status === 'occupied' && sensor.timeLeft !== undefined && (
-        <div style={{ ...styles.timerText, color: statusColor }}>
-          {sensor.timeLeft} min remaining
-        </div>
-      )}
 
       {/* ---- Sensor readings ---- */}
       {!isOffline && (
