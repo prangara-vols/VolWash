@@ -47,19 +47,23 @@ export function useSensorData() {
         const machine = data[key];
         
         const isDemo = key.replace(/\s/g, '').toLowerCase() === 'washer1';
+        
+        // Offline detection: 
+        // 1. Explicit 'OFFLINE' status from Firebase
+        // 2. Heartbeat check: If no update for 60 seconds (requires lastUpdate field in DB)
+        const OFFLINE_TIMEOUT = 60000; 
+        const isOffline = machine.status === 'OFFLINE' || 
+          (machine.lastUpdate && (now - machine.lastUpdate > OFFLINE_TIMEOUT));
 
-        // Logic: Map Firebase status to our UI states (occupied, free, or offline)
-        const status: SensorStatus =
-          machine.status === 'OFFLINE' ? 'offline' :
-          (machine.status === 'IN USE' ? 'occupied' : 'free');
+        const status: SensorStatus = isOffline ? 'offline' : 
+          (machine.vibration > 0 ? 'occupied' : 'free');
 
         return {
           id: key,
           name: isDemo ? 'Washing Demo' : key.charAt(0).toUpperCase() + key.slice(1).replace(/(\d+)/, ' $1'),
           location: isDemo ? 'Demo' : (machine.location || 'UTK Dorm'),
           status,
-          // Maintain compatibility with your SensorCard readings
-          vibration: status === 'occupied' ? 1 : 0,
+          vibration: machine.vibration || 0,
           timestamp: now,
           timeLeft: machine.timeLeft || 0,
         };
