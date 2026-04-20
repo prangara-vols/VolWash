@@ -59,7 +59,7 @@ export default function ConnectionBanner({ connection, isDarkMode = true }: Conn
 
       {/* Show the WebSocket URL so it's easy to debug */}
       {!connection.connected && (
-        <span style={styles.urlText}>{SENSOR_CONFIG.WS_URL}</span>
+  <span style={styles.urlText}>Firebase Realtime Database</span>
       )}
 
       <style>
