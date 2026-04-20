@@ -195,6 +195,9 @@ export default function App() {
             <div>
               <p style={{ margin: 0, fontWeight: 700 }}>Tickle College of Engineering</p>
               <p style={{ margin: '4px 0', fontWeight: 300 }}>Zeanah Engineering Complex, 863 Neyland Dr<br />Knoxville, TN 37996</p>
+              <p style={{ margin: '12px 0 0 0', fontStyle: 'italic', fontWeight: 300, color: theme.subtext }}>
+                Project created by Pon Madan Rangaraj and Team
+              </p>
             </div>
             <div>
               <p style={{ margin: 0, fontWeight: 300 }}>Phone: (865) 974-5321</p>
