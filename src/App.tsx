@@ -55,7 +55,7 @@ export default function App() {
             {/* Unit Identifier */}
             <div>
               <h1 title="VolWash" style={{ 
-                fontSize: window.innerWidth > 768 ? '44px' : '24px', 
+                fontSize: window.innerWidth > 768 ? '44px' : '38px', 
                 margin: 0, 
                 fontWeight: 700, 
                 color: '#58595B', // Smokey Gray
