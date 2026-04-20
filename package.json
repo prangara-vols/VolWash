@@ -2,7 +2,7 @@
   "name": "volwash",
   "version": "1.0.0",
   "description": "Real-time laundry monitor for UTK dorms",
-  "homepage": "https://rpmad.github.io/VolWash",
+  "homepage": "https://prangara-vols.github.io/VolWash",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

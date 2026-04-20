@@ -46,7 +46,7 @@ export function useSensorData() {
       const mappedSensors: SensorReading[] = Object.keys(data).map((key) => {
         const machine = data[key];
         
-        const isDemo = key.toLowerCase() === 'washer1';
+        const isDemo = key.replace(/\s/g, '').toLowerCase() === 'washer1';
         
         // Logic: Map Firebase "IN USE" to our UI "occupied"
         const status: SensorStatus = 

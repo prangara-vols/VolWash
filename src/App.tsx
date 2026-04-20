@@ -11,7 +11,7 @@ import { SensorReading, useSensorData } from './hooks/useSensorData';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<'dash' | 'map' | 'alerts'>('dash');
-  const [isDarkMode, setIsDarkMode] = useState(true);
+  const [isDarkMode, setIsDarkMode] = useState(false);
   const [selectedDorm, setSelectedDorm] = useState('All');
   const [machineType, setMachineType] = useState<'all' | 'washers' | 'dryers'>('all');
   
@@ -35,8 +35,8 @@ export default function App() {
 
   // Step 2: Filter by Machine Type
   const filteredSensors = dormFiltered.filter((s: SensorReading) => {
-    if (machineType === 'washers') return s.id.toLowerCase().includes('w') || s.name.toLowerCase().includes('washer');
-    if (machineType === 'dryers') return s.id.toLowerCase().includes('d') || s.name.toLowerCase().includes('dryer');
+    if (machineType === 'washers') return s.id?.toLowerCase().includes('w') || s.name?.toLowerCase().includes('washer');
+    if (machineType === 'dryers') return s.id?.toLowerCase().includes('d') || s.name?.toLowerCase().includes('dryer');
     return true;
   });
 
@@ -154,7 +154,7 @@ export default function App() {
       paddingBottom: '80px', 
       transition: 'background-color 0.3s',
       // UTK Standard: Gotham. Fallback: Montserrat (UTK web alternative)
-      fontFamily: 'Gotham, "Montserrat", "Helvetica Neue", Arial, sans-serif'
+      fontFamily: '"Montserrat", Gotham, "Helvetica Neue", Arial, sans-serif'
     }}>
       {/* 1. The Big Orange ID Line (6px UT Orange) */}
       <div style={{ height: '6px', backgroundColor: '#FF8200', width: '100%' }} />
@@ -185,7 +185,7 @@ export default function App() {
         backgroundColor: isDarkMode ? '#1C1C1E' : '#FFFFFF',
         borderTop: '6px solid #FF8200' 
       }}>
-        <div style={styles.footerContent}>
+        <div style={{ ...styles.footerContent, textAlign: 'left' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '24px' }}>
             <img src={utkLogo} alt="University of Tennessee" style={{ height: '60px', width: 'auto' }} />
             <h3 style={{ color: '#58595B', margin: 0, fontSize: '22px', fontWeight: 700 }}>Tickle College of Engineering</h3>
@@ -208,12 +208,12 @@ export default function App() {
 
       {/* UT Standard Footer */}
       <div style={{ 
-        padding: '32px 16px 110px',
+        padding: '32px 0 110px', // Removed horizontal padding to push further left
         color: isDarkMode ? '#8E8E93' : '#58595B',
         fontSize: '13px',
         borderTop: isDarkMode ? '1px solid #2C2C2E' : '1px solid #E5E5EA'
       }}>
-        <div style={styles.footerContent}>
+        <div style={{ ...styles.footerContent, textAlign: 'left' }}>
           <div style={{ marginBottom: '20px' }}>
             <p style={{ margin: '0 0 4px 0', fontWeight: 700 }}>The University of Tennessee</p>
             <p style={{ margin: 0 }}>Knoxville, Tennessee 37996<br />865-974-1000</p>
@@ -228,6 +228,7 @@ export default function App() {
             flexWrap: 'wrap', 
             gap: '12px', 
             marginTop: '24px',
+            marginLeft: '24px', // Pushed legal links a lil to the right
             textTransform: 'uppercase',
             fontWeight: 300,
             letterSpacing: '0.05em'

@@ -100,7 +100,6 @@ const styles: Record<string, React.CSSProperties> = {
   },
   statusText: {
     fontSize: '12px',
-    color: '#EBEBF5CC',
     fontWeight: 300,
   },
   urlText: {

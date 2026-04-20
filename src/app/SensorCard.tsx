@@ -125,7 +125,6 @@ const styles: Record<string, React.CSSProperties> = {
     marginBottom: '4px',
   },
   sensorName: {
-    fontFamily: 'inherit',
     fontSize: '16px',
     fontWeight: 600,
     color: '#FFFFFF',
@@ -154,7 +153,6 @@ const styles: Record<string, React.CSSProperties> = {
   location: {
     fontSize: '12px',
     color: '#8E8E93',
-    fontWeight: 300,
     marginBottom: '12px',
   },
   timerText: {
@@ -185,7 +183,6 @@ const styles: Record<string, React.CSSProperties> = {
     marginBottom: '2px',
     textTransform: 'uppercase',
     letterSpacing: '0.5px',
-    fontWeight: 300,
   },
   readingValue: {
     fontSize: '14px',
