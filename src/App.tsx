@@ -202,13 +202,20 @@ export default function App() {
             </div>
             <div>
               <a href="https://tickle.utk.edu" style={{ color: '#FF8200', textDecoration: 'none', fontWeight: 300 }}>TCE Website</a>
-              <p style={{ 
-                margin: '12px 0 0 0', 
-                fontStyle: 'italic', 
-                fontWeight: 700,
-                animation: 'orangeNeonRGB 4s infinite ease-in-out'
-              }}>
-                Project created by Pon Madan Rangaraj and Team
+              <p style={{ margin: '12px 0 0 0', fontStyle: 'italic', fontWeight: 700 }}>
+                {"Project created by Pon Madan Rangaraj and Team".split('').map((char, index) => (
+                  <span
+                    key={index}
+                    style={{
+                      display: 'inline-block',
+                      whiteSpace: char === ' ' ? 'pre' : 'normal',
+                      animation: 'orangeNeonRGB 4s infinite ease-in-out, waveCalm 3s infinite ease-in-out',
+                      animationDelay: `${index * 0.05}s`
+                    }}
+                  >
+                    {char}
+                  </span>
+                ))}
               </p>
             </div>
           </div>
@@ -258,6 +265,10 @@ export default function App() {
             50%  { color: #FF5E00; text-shadow: 0 0 5px rgba(255, 94, 0, 0.4); }
             75%  { color: #FFB347; text-shadow: 0 0 12px rgba(255, 179, 71, 0.7); }
             100% { color: #FF8200; text-shadow: 0 0 5px rgba(255, 130, 0, 0.4); }
+          }
+          @keyframes waveCalm {
+            0%, 100% { transform: translateY(0); }
+            50%      { transform: translateY(-4px); }
           }
         `}
       </style>
