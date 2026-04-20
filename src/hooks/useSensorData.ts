@@ -20,7 +20,7 @@ export interface ConnectionState {
   error?: string | null;
 }
 
-const OFFLINE_TIMEOUT_MS = 5000; // 15 sec
+const OFFLINE_TIMEOUT_MS = 15000; // 15 sec
 
 interface FirebaseMachineData {
   status?: string;
