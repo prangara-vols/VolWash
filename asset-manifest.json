@@ -1,12 +1,12 @@
 {
   "files": {
-    "main.js": "/VolWash/static/js/main.79c30cd5.js",
-    "static/media/volwash-logo.png": "/VolWash/static/media/volwash-logo.76677a25e23f10922ebc.png",
+    "main.js": "/VolWash/static/js/main.09ce3589.js",
+    "static/media/volwash-logo-textless.png": "/VolWash/static/media/volwash-logo-textless.896158ff2c1abab29b03.png",
     "static/media/UTK.png": "/VolWash/static/media/UTK.b9b6e7825803dbbae013.png",
     "index.html": "/VolWash/index.html",
-    "main.79c30cd5.js.map": "/VolWash/static/js/main.79c30cd5.js.map"
+    "main.09ce3589.js.map": "/VolWash/static/js/main.09ce3589.js.map"
   },
   "entrypoints": [
-    "static/js/main.79c30cd5.js"
+    "static/js/main.09ce3589.js"
   ]
 }
