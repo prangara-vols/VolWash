@@ -202,7 +202,12 @@ export default function App() {
             </div>
             <div>
               <a href="https://tickle.utk.edu" style={{ color: '#FF8200', textDecoration: 'none', fontWeight: 300 }}>TCE Website</a>
-              <p style={{ margin: '12px 0 0 0', fontStyle: 'italic', fontWeight: 700 }}>
+          <p style={{ 
+            margin: '12px 0 0 0', 
+            fontStyle: 'italic', 
+            fontWeight: 700,
+            whiteSpace: 'nowrap'
+          }}>
                 {"Project created by Pon Madan Rangaraj, Aaron Choi, Swagat Khot, and Aarohan Singh".split('').map((char, index) => (
                   <span
                     key={index}
@@ -231,6 +236,7 @@ export default function App() {
       }}>
         <div style={{ ...styles.footerContent, textAlign: 'left' }}>
           <div style={{ marginBottom: '20px', marginLeft: '24px' }}>
+        <p style={{ margin: '0 0 8px 0', fontSize: '14px', fontWeight: 700 }}>© {new Date().getFullYear()} VolWash. All rights reserved.</p>
             <p style={{ margin: '0 0 4px 0', fontWeight: 700 }}>The University of Tennessee</p>
             <p style={{ margin: 0 }}>Knoxville, Tennessee 37996<br />865-974-1000</p>
           </div>
