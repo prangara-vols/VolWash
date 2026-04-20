@@ -48,12 +48,20 @@ export function useSensorData() {
         
         const isDemo = key.replace(/\s/g, '').toLowerCase() === 'washer1';
         
-        // Offline detection: 
-        // 1. Explicit 'OFFLINE' status from Firebase
-        // 2. Heartbeat check: If no update for 60 seconds (requires lastUpdate field in DB)
-        const OFFLINE_TIMEOUT = 60000; 
-        const isOffline = machine.status === 'OFFLINE' || 
-          (machine.lastUpdate && (now - machine.lastUpdate > OFFLINE_TIMEOUT));
+        // Offline detection logic: 
+        // If the ESP32 is unplugged, it won't update the heartbeat (lastUpdate).
+        // We consider it offline if the heartbeat is missing or older than 60 seconds.
+        const OFFLINE_TIMEOUT_MS = 60000;
+        let lastSeen = machine.lastUpdate;
+        
+        // Normalize: Many ESP32 libraries send Unix seconds; JS expects milliseconds.
+        if (lastSeen && lastSeen < 10000000000) lastSeen *= 1000;
+
+        const isOffline = !isDemo && (
+          machine.status === 'OFFLINE' || 
+          !lastSeen || 
+          (now - lastSeen > OFFLINE_TIMEOUT_MS)
+        );
 
         const status: SensorStatus = isOffline ? 'offline' : 
           (machine.vibration > 0 ? 'occupied' : 'free');
