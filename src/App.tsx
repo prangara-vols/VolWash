@@ -195,9 +195,6 @@ export default function App() {
             <div>
               <p style={{ margin: 0, fontWeight: 700 }}>Tickle College of Engineering</p>
               <p style={{ margin: '4px 0', fontWeight: 300 }}>Zeanah Engineering Complex, 863 Neyland Dr<br />Knoxville, TN 37996</p>
-              <p style={{ margin: '12px 0 0 0', fontStyle: 'italic', fontWeight: 300, color: theme.subtext }}>
-                Project created by Pon Madan Rangaraj and Team
-              </p>
             </div>
             <div>
               <p style={{ margin: 0, fontWeight: 300 }}>Phone: (865) 974-5321</p>
@@ -205,6 +202,14 @@ export default function App() {
             </div>
             <div>
               <a href="https://tickle.utk.edu" style={{ color: '#FF8200', textDecoration: 'none', fontWeight: 300 }}>TCE Website</a>
+              <p style={{ 
+                margin: '12px 0 0 0', 
+                fontStyle: 'italic', 
+                fontWeight: 700,
+                animation: 'orangeNeonRGB 4s infinite ease-in-out'
+              }}>
+                Project created by Pon Madan Rangaraj and Team
+              </p>
             </div>
           </div>
         </div>
@@ -244,6 +249,18 @@ export default function App() {
           </div>
         </div>
       </div>
+
+      <style>
+        {`
+          @keyframes orangeNeonRGB {
+            0%   { color: #FF8200; text-shadow: 0 0 5px rgba(255, 130, 0, 0.4); }
+            25%  { color: #FFA500; text-shadow: 0 0 12px rgba(255, 165, 0, 0.7); }
+            50%  { color: #FF5E00; text-shadow: 0 0 5px rgba(255, 94, 0, 0.4); }
+            75%  { color: #FFB347; text-shadow: 0 0 12px rgba(255, 179, 71, 0.7); }
+            100% { color: #FF8200; text-shadow: 0 0 5px rgba(255, 130, 0, 0.4); }
+          }
+        `}
+      </style>
     </div>
   );
 }
